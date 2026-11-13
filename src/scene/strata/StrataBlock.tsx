@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useThree, type ThreeEvent } from '@react-three/fiber';
-import { ContactShadows, Html, OrbitControls } from '@react-three/drei';
+import { ContactShadows, OrbitControls } from '@react-three/drei';
 import { BufferAttribute, BufferGeometry, CanvasTexture, DoubleSide, LinearFilter, Plane, SRGBColorSpace, Vector3 } from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { BLOCK_BOTTOM, BLOCK_SIZE, surfaceAt, unitAt, type Model } from '@/lib/strata/model';
@@ -22,7 +22,6 @@ export type BlockProps = {
   onPickUnit: (unitId: string | null) => void;
   onHoverUnit: (unitId: string | null) => void;
   onDrill: (x: number, y: number) => void;
-  labels: { top: string; scale: string };
 };
 
 function useCanvasTexture() {
@@ -162,18 +161,19 @@ function Rig({ resetNonce }: { resetNonce: number }) {
   const controls = useRef<OrbitControlsImpl>(null);
   const camera = useThree((t) => t.camera);
   const size = useThree((t) => t.size);
+  const aspect = size.width / Math.max(1, size.height);
+  const aspectClass = aspect < 0.85 ? 0 : aspect < 1.25 ? 1 : 2;
   useEffect(() => {
-    const k = size.width < size.height ? 1.55 : 1;
+    const k = aspectClass === 0 ? 1.6 : aspectClass === 1 ? 1.3 : 1.08;
     camera.position.set(11.5 * k, 8.2 * k, 13.5 * k);
-    controls.current?.target.set(0, -1.6, 0);
+    controls.current?.target.set(0, -2.3, 0);
     controls.current?.update();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetNonce, camera, size.width < size.height]);
-  return <OrbitControls ref={controls} makeDefault enableDamping dampingFactor={0.12} minDistance={7} maxDistance={48} maxPolarAngle={Math.PI * 0.62} />;
+  }, [resetNonce, camera, aspectClass]);
+  return <OrbitControls ref={controls} makeDefault enableDamping dampingFactor={0.12} minDistance={7} maxDistance={60} maxPolarAngle={Math.PI * 0.62} />;
 }
 
 function Scene(props: BlockProps & { tiles: Tiles }) {
-  const { model, tiles, quality, slice, well, onPickUnit, onHoverUnit, onDrill, labels } = props;
+  const { model, tiles, quality, slice, well, onPickUnit, onHoverUnit, onDrill } = props;
   const gl = useThree((t) => t.gl);
   useEffect(() => {
     gl.localClippingEnabled = true;
@@ -220,9 +220,6 @@ function Scene(props: BlockProps & { tiles: Tiles }) {
       </mesh>
       {well && <Well model={model} x={well.x} y={well.y} />}
       <ContactShadows position={[0, BLOCK_BOTTOM * S - 0.25, 0]} opacity={0.5} scale={26} blur={2.6} far={12} resolution={512} />
-      <Html position={[0, BLOCK_BOTTOM * S - 0.05, HALF + 0.55]} center style={{ pointerEvents: 'none' }}>
-        <div className="label3d !static !translate-x-0 !translate-y-0">{labels.scale}</div>
-      </Html>
       <Rig resetNonce={props.resetNonce} />
     </>
   );

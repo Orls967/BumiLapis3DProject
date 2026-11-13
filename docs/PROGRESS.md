@@ -1,20 +1,19 @@
 # PROGRESS
-Diperbarui: 2026-11-13 (sesi 1)
-Milestone aktif: M4
-Sub-tugas aktif: lithologies.ts, pola SVG, penampil kolom stratigrafi
-Langkah berikut yang persis: tulis src/content/lithologies.ts, src/content/timescale.ts,
-  src/content/structures.ts, src/ui/LithologyPatterns.tsx, src/ui/StratColumnView.tsx,
-  src/content/columns/{teaching,south-sumatra}.json, src/content/formations.ts, lalu
-  halaman /kolom dan /formasi.
+Diperbarui: 2026-11-13 (sesi 2)
+Milestone aktif: M6
+Sub-tugas aktif: lib/sedsim (difusi cekungan, kecepatan jatuh, Hjulström) + test
+Langkah berikut yang persis: tulis src/lib/sedsim/{basin,settling,hjulstrom}.ts + test,
+  src/workers/sedsim.worker.ts, lalu src/pages/sedimentation/SedimentationPage.tsx
+  (tab Cekungan / Tabung / Saluran arus), teks di ui.ts bagian `sed`.
 
 ## Selesai
 - [x] M0 Fondasi (tag m0)
 - [x] M1 Globe dan interior Bumi (tag m1)
 - [x] M2 Atmosfer, permukaan, perjalanan kedalaman (tag m2)
 - [x] M3 Konten, pencarian, pembelajaran (tag m3)
+- [x] M4 Kolom stratigrafi dan formasi (tag m4)
+- [x] M5 Lapisan batuan 3D (tag m5)
 ## Sedang berjalan
-- [ ] M4 Kolom stratigrafi dan formasi
-- [ ] M5 Lapisan batuan 3D
 - [ ] M6 Simulasi sedimentasi
 - [ ] M7 Interpretasi lingkungan pengendapan
 - [ ] M8 Penyempurnaan
@@ -40,6 +39,11 @@ Langkah berikut yang persis: tulis src/content/lithologies.ts, src/content/times
 - Pada batas lapisan, lapisan atas "memiliki" batas (cocok dengan densitas sisi atas).
 - Pembanding skala digambar sebagai titik pada muka potong di ketinggian sebenarnya.
 - Service worker sederhana (`public/sw.js`) untuk offline setelah dimuat.
+- Blok batuan (M5): model fungsional `column(x, y)`; tiap operasi sejarah membungkus fungsi
+  sebelumnya. Deformasi = geser tegak sederhana (dinyatakan di UI). Sisi blok dirender dari
+  raster penampang ke kanvas (pola litologi), bukan poligon; resolusi turun saat slider digeser.
+- Label skala blok ditulis sebagai teks DOM (drei `Html` memicu galat unmount di React 19).
+- Server pratinjau bisa pindah ke port 5174 bila 5173 terpakai: pakai `BASE_URL=... node scripts/shots.mjs`.
 ## Masalah terbuka
 - Label 3D lapisan tipis kadang disembunyikan oleh pencegah tumpang-tindih (disengaja).
 ## Data berlabel verified:false

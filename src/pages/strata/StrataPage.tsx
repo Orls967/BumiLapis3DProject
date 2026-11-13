@@ -187,7 +187,7 @@ export default function StrataPage() {
   return (
     <div className="page pb-10">
       <header className="flex flex-wrap items-end gap-3">
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 basis-full sm:basis-0">
           <h1 className="page-title">{T.title}</h1>
           <p className="text-sm text-muted">{T.intro}</p>
         </div>
@@ -198,7 +198,7 @@ export default function StrataPage() {
       </header>
 
       <div className="mt-3 grid gap-4 lg:grid-cols-[19rem_minmax(0,1fr)_20rem]">
-        <aside className="grid content-start gap-3">
+        <aside className="order-2 grid content-start gap-3 lg:order-none">
           <section className="card p-3">
             <h2 className="label mb-2">{T.scenario}</h2>
             <div className="grid grid-cols-2 gap-1.5 lg:grid-cols-1 xl:grid-cols-2">
@@ -227,7 +227,7 @@ export default function StrataPage() {
           </section>
         </aside>
 
-        <section className="min-w-0">
+        <section className="order-1 min-w-0 lg:order-none">
           <div className="card relative h-[52vh] min-h-[340px] overflow-hidden lg:h-[62vh]" style={{ background: 'radial-gradient(ellipse at 50% 35%, var(--panel) 0%, var(--panel-2) 100%)' }}>
             {webgl ? (
               <Suspense fallback={<div className="grid h-full place-items-center text-muted">{ui.common.loading}</div>}>
@@ -241,7 +241,6 @@ export default function StrataPage() {
                   onPickUnit={setUnitId}
                   onHoverUnit={setHoverId}
                   onDrill={(x, y) => setWell({ x: Math.min(BLOCK_SIZE - 5, Math.max(5, x)), y: Math.min(BLOCK_SIZE - 5, Math.max(5, y)) })}
-                  labels={{ top: '', scale: T.scale }}
                 />
               </Suspense>
             ) : (
@@ -258,7 +257,9 @@ export default function StrataPage() {
                 ⟲ {T.resetView}
               </button>
             </div>
-            <p className="pointer-events-none absolute bottom-2 left-3 max-w-[50%] text-[11px] leading-tight text-muted">{T.modelNote}</p>
+            <p className="pointer-events-none absolute right-3 top-3 max-w-[55%] text-right text-[11px] leading-tight text-muted">
+              {T.scale}. {T.modelNote}
+            </p>
           </div>
 
           <section className="card mt-3 p-3" aria-label={T.history}>
@@ -308,7 +309,7 @@ export default function StrataPage() {
           </section>
         </section>
 
-        <aside className="grid content-start gap-3">
+        <aside className="order-3 grid content-start gap-3 lg:order-none">
           <section className="card p-3">
             <h2 className="label mb-1">{T.unit.title}</h2>
             {unit ? (
