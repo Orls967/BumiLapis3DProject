@@ -1,10 +1,11 @@
 # PROGRESS
 Diperbarui: 2026-11-13 (sesi 2)
-Milestone aktif: M7
-Sub-tugas aktif: content/environments.ts (14 lingkungan + aturan) dan lib/interpret
-Langkah berikut yang persis: tulis src/content/environments.ts, src/lib/interpret/{engine,column}.ts
-  + test sembilan kasus (BUMILAPIS.md 4.6), lalu src/pages/interpret/InterpretPage.tsx
-  (formulir, hasil, mode kolom `?kolom=<id>`, kartu lingkungan), teks di ui.ts bagian `interp`.
+Milestone aktif: M8
+Sub-tugas aktif: penyempurnaan (aksesibilitas, performa/bundle, e2e Playwright, README)
+Langkah berikut yang persis: (1) `npm run build` dan periksa ukuran chunk awal (< 500 kB gzip),
+  pisahkan three.js bila ikut termuat di rute non-3D; (2) tulis tests/smoke.spec.ts (tiap rute,
+  pilih lapisan, preset simulasi, sumur → kolom → interpretasi) dan jalankan `npm run e2e`;
+  (3) tangkapan layar desktop+ponsel semua rute, perbaiki cacat; (4) README lengkap.
 
 ## Selesai
 - [x] M0 Fondasi (tag m0)
@@ -14,8 +15,8 @@ Langkah berikut yang persis: tulis src/content/environments.ts, src/lib/interpre
 - [x] M4 Kolom stratigrafi dan formasi (tag m4)
 - [x] M5 Lapisan batuan 3D (tag m5)
 - [x] M6 Simulasi sedimentasi (tag m6)
+- [x] M7 Interpretasi lingkungan pengendapan (tag m7)
 ## Sedang berjalan
-- [ ] M7 Interpretasi lingkungan pengendapan
 - [ ] M8 Penyempurnaan
 - [ ] M9 Siap online
 ## Keputusan
@@ -50,6 +51,15 @@ Langkah berikut yang persis: tulis src/content/environments.ts, src/lib/interpre
   (2) batuan dasar tidak tererosi (fluks dibatasi sedimen yang tersedia). Garis waktu disimpan
   di kerangka tanpa subsidence. Ada slider tambahan "tren muka laut" untuk preset transgresi.
 - Tabung pengendapan dan saluran arus digambar di kanvas 2D (bukan InstancedMesh).
+- Mesin interpretasi (M7): skor = Σ bobot aturan cocok ÷ bobot positif maksimum untuk ciri yang
+  diisi (untuk ciri majemuk: n bobot positif terbesar, n = jumlah nilai yang diisi). Ciri
+  diagnostik hanya dipakai sebagai pemutus seri. Ukuran butir dicocokkan per kelompok
+  (lempung–lanau, pasir halus/sedang/kasar, kerikil). Diamiktit dicatat sebagai konglomerat
+  berpemilahan buruk karena tidak ada litologi diamiktit di daftar pola.
+- Interval kolom: dipecah di kontak erosional/ketidakselarasan dan pergantian keluarga batuan
+  (klastik/karbonat/kristalin), lalu per larik ukuran butir monoton; ≥ 3 larik pendek
+  berurutan digabung sebagai paket ritmis (turbidit). Batuan dasar kristalin tidak ditafsirkan.
+- Bobot aturan (1–5) adalah penilaian ajar dari tabel Bagian 3.F, bukan hasil pengukuran.
 ## Masalah terbuka
 - Label 3D lapisan tipis kadang disembunyikan oleh pencegah tumpang-tindih (disengaja).
 ## Data berlabel verified:false
