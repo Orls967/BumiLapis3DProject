@@ -1,11 +1,9 @@
 # PROGRESS
 Diperbarui: 2026-11-13 (sesi 2)
-Milestone aktif: M8
-Sub-tugas aktif: penyempurnaan (aksesibilitas, performa/bundle, e2e Playwright, README)
-Langkah berikut yang persis: (1) `npm run build` dan periksa ukuran chunk awal (< 500 kB gzip),
-  pisahkan three.js bila ikut termuat di rute non-3D; (2) tulis tests/smoke.spec.ts (tiap rute,
-  pilih lapisan, preset simulasi, sumur → kolom → interpretasi) dan jalankan `npm run e2e`;
-  (3) tangkapan layar desktop+ponsel semua rute, perbaiki cacat; (4) README lengkap.
+Milestone aktif: M9
+Sub-tugas aktif: siap online (LICENSE, workflow Pages, uji subpath, PUBLIKASI.md)
+Langkah berikut yang persis: buat LICENSE (MIT), .github/workflows/deploy.yml, uji `dist` dari
+  subfolder, periksa berkas ter-commit, tulis docs/PUBLIKASI.md, tag m9, laporan akhir.
 
 ## Selesai
 - [x] M0 Fondasi (tag m0)
@@ -16,8 +14,8 @@ Langkah berikut yang persis: (1) `npm run build` dan periksa ukuran chunk awal (
 - [x] M5 Lapisan batuan 3D (tag m5)
 - [x] M6 Simulasi sedimentasi (tag m6)
 - [x] M7 Interpretasi lingkungan pengendapan (tag m7)
+- [x] M8 Penyempurnaan (tag m8)
 ## Sedang berjalan
-- [ ] M8 Penyempurnaan
 - [ ] M9 Siap online
 ## Keputusan
 - `.claude/settings.json` TIDAK dibuat: penulisan berkas izin ditolak oleh pengaman sesi
@@ -60,9 +58,20 @@ Langkah berikut yang persis: (1) `npm run build` dan periksa ukuran chunk awal (
   (klastik/karbonat/kristalin), lalu per larik ukuran butir monoton; ≥ 3 larik pendek
   berurutan digabung sebagai paket ritmis (turbidit). Batuan dasar kristalin tidak ditafsirkan.
 - Bobot aturan (1–5) adalah penilaian ajar dari tabel Bagian 3.F, bukan hasil pengukuran.
+- M8: bundle awal ≈ 125 kB gzip (index + runtime + CSS); three.js hanya dimuat di rute Jelajah
+  dan Lapisan Batuan. 60 fps terukur di Chromium headless (desktop dan viewport ponsel) pada
+  mesin pengembang; belum diukur di ponsel fisik.
+- E2E: `npm run e2e` menjalankan 8 uji asap terhadap build produksi (port 4173).
 ## Masalah terbuka
 - Label 3D lapisan tipis kadang disembunyikan oleh pencegah tumpang-tindih (disengaja).
+- Performa di ponsel fisik belum diukur (hanya emulasi viewport).
+- Batas fasies pada penampang simulasi cekungan tampak bergerigi (resolusi 120 sel × 48 garis waktu).
+- Pada kolom ajar dan Sumatra Selatan, mesin memberi satu peringatan Hukum Walther
+  (delta ↔ paparan karbonat tanpa bidang erosi); dibiarkan sebagai bahan diskusi.
 ## Data berlabel verified:false
 - markers.ts: ketinggian jelajah pesawat ≈11 km (nilai tipikal, belum dirujuk).
 - lib/sedsim/hjulstrom.ts: kurva erosi dan pengendapan didigitasi secara pendekatan dari diagram
   klasik Hjulström (1935); UI menampilkan label "perlu verifikasi" dan "kualitatif".
+- content/environments.ts: bobot aturan interpretasi adalah penilaian ajar (ditulis di halaman Tentang).
+- content/formations.ts: Formasi Kasai `verified: false` (umur/ketebalan belum dirujuk ke sumber primer).
+- content/columns/*.json: tebal lapisan kolom bawaan bersifat ilustratif (`verified: false` bila ditandai).

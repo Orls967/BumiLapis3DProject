@@ -15,7 +15,7 @@ export const about = {
     'Pembagian mekanis (litosfer, astenosfer, mesosfer) memakai kedalaman rata-rata; di alam batasnya berubah dari tempat ke tempat. Zona transisi (410–660 km) ditampilkan di kedua mode pengelompokan agar tidak ada celah kedalaman.',
     'Globe menampilkan satu kerak (benua, ≈35 km) pada penampang; kerak samudra (≈7 km) dijelaskan sebagai varian lateral. Pita lautan digambar setebal kedalaman rata-rata (≈3,7 km).',
     'Magnetosfer, garis medan, dan animasi zona bayangan bersifat skematis dan tidak berskala. Awan pada globe dibuat secara prosedural, bukan citra satelit.',
-    'Blok lapisan batuan memakai deformasi geser tegak sederhana (bukan pemodelan mekanika batuan). Simulasi pengisian cekungan adalah model difusi satu dimensi. Diagram Hjulström bersifat empiris dan kualitatif; kurvanya didigitasi secara pendekatan.',
+    'Blok lapisan batuan memakai deformasi geser tegak sederhana (bukan pemodelan mekanika batuan). Simulasi pengisian cekungan adalah model difusi satu dimensi dengan skala tegak yang sangat diperbesar; daya angkut di laut dibuat melemah terhadap kedalaman dan batuan dasar dianggap tidak tererosi. Kecepatan jatuh butir memakai persamaan Ferguson & Church (2004) untuk kuarsa dalam air 20 °C. Diagram Hjulström bersifat empiris dan kualitatif; kurvanya didigitasi secara pendekatan.',
     'Mesin interpretasi lingkungan pengendapan berbasis aturan sederhana yang transparan. Hasilnya bersifat edukatif; interpretasi nyata membutuhkan data lapangan.',
     'Data formasi Cekungan Sumatra Selatan adalah ringkasan umum dari literatur; ketebalan dan umur sangat bervariasi antarlokasi. Entri yang belum diverifikasi diberi label "perlu verifikasi".',
   ],

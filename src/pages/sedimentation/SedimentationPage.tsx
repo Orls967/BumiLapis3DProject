@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ui } from '@/content/ui';
+import { PageTabs } from '@/ui/PageTabs';
 import { QuizButton } from '@/ui/Quiz';
 
 const BasinSim = lazy(() => import('./BasinSim'));
@@ -27,13 +28,7 @@ export default function SedimentationPage() {
         </div>
         <QuizButton module="sedimentation" />
       </header>
-      <div role="tablist" aria-label={T.title} className="mt-3 flex flex-wrap gap-1.5">
-        {TABS.map((t) => (
-          <button key={t.id} role="tab" aria-selected={t.id === active.id} className={`btn ${t.id === active.id ? "btn-primary" : ""}`} onClick={() => setParams({ sim: t.id }, { replace: true })}>
-            {t.label}
-          </button>
-        ))}
-      </div>
+      <PageTabs label={T.title} tabs={TABS} active={active.id} onChange={(id) => setParams({ sim: id }, { replace: true })} />
       <div role="tabpanel" aria-label={active.label} className="mt-3">
         <Suspense fallback={<p className="text-muted">{ui.common.loading}</p>}>
           <Active />

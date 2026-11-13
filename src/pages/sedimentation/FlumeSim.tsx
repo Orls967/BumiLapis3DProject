@@ -132,7 +132,7 @@ export default function FlumeSim() {
     ctx.strokeStyle = dark ? 'rgba(191,219,254,0.5)' : 'rgba(30,64,175,0.35)';
     ctx.lineWidth = 1.4;
     for (let i = 0; i < 16; i++) {
-      const yy = 14 + ((i * 53) % Math.max(20, bedY - 34));
+      const yy = 30 + ((i * 53) % Math.max(20, bedY - 50));
       const len = 8 + 60 * k;
       const xx = ((i * 97 + tRef.current * (20 + 420 * k)) % (W + len)) - len;
       ctx.beginPath();

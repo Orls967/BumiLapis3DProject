@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ui } from '@/content/ui';
+import { PageTabs } from '@/ui/PageTabs';
 import { QuizButton } from '@/ui/Quiz';
 
 const FormInterp = lazy(() => import('./FormInterp'));
@@ -32,24 +33,17 @@ export default function InterpretPage() {
       <p role="note" className="mt-2 rounded-xl border border-warn/50 bg-accent-soft px-3 py-2 text-sm font-semibold">
         ⚠ {T.disclaimer}
       </p>
-      <div role="tablist" aria-label={T.title} className="mt-3 flex flex-wrap gap-1.5">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            role="tab"
-            aria-selected={t.id === active.id}
-            className={`btn ${t.id === active.id ? 'btn-primary' : ''}`}
-            onClick={() => {
-              const next: Record<string, string> = { mode: t.id };
-              const kolom = params.get('kolom');
-              if (t.id === 'kolom' && kolom) next.kolom = kolom;
-              setParams(next, { replace: true });
-            }}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
+      <PageTabs
+        label={T.title}
+        tabs={TABS}
+        active={active.id}
+        onChange={(id) => {
+          const next: Record<string, string> = { mode: id };
+          const kolom = params.get('kolom');
+          if (id === 'kolom' && kolom) next.kolom = kolom;
+          setParams(next, { replace: true });
+        }}
+      />
       <div role="tabpanel" aria-label={active.label} className="mt-3">
         <Suspense fallback={<p className="text-muted">{ui.common.loading}</p>}>
           <Active />
