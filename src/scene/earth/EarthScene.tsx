@@ -30,6 +30,8 @@ const PHI: Record<string, number> = {
   mesosphere: 46,
   thermosphere: 57,
   exosphere: 68,
+  'ozone-layer': 14,
+  ionosphere: 78,
   'disc:moho': -32,
   'disc:d410': -44,
   'disc:d660': -56,
@@ -51,7 +53,7 @@ export function setAnchor(id: string, visible: number, priority = 0): Anchor {
 }
 
 /** Point on the labelled cut face (the −X side face, whose normal points to +X/+Z). */
-function facePoint(out: Vector3, cut: number, radius: number, phiDeg: number, offsetZ: number, lift = 0.004) {
+export function facePoint(out: Vector3, cut: number, radius: number, phiDeg: number, offsetZ: number, lift = 0.004) {
   const half = cut / 2;
   const phi = MathUtils.degToRad(phiDeg);
   const c = Math.cos(phi) * radius;
@@ -60,7 +62,7 @@ function facePoint(out: Vector3, cut: number, radius: number, phiDeg: number, of
   out.z += Math.sin(half) * lift;
   return out;
 }
-const faceNormal = (out: Vector3, cut: number) => out.set(Math.cos(cut / 2), 0, Math.sin(cut / 2));
+export const faceNormal = (out: Vector3, cut: number) => out.set(Math.cos(cut / 2), 0, Math.sin(cut / 2));
 
 function Animator() {
   const memo = useRef<{ key: unknown[]; targets: ShellTarget[] }>({ key: [], targets: [] });
@@ -68,7 +70,9 @@ function Animator() {
   useFrame((_, rawDt) => {
     const dt = Math.min(rawDt, 0.05);
     const s = useEarth.getState();
-    const key = [s.grouping, s.scaleMode, s.view, s.cutDeg, s.hidden, s.overlays.atmosphere];
+    const ozone = s.overlays.ozone || s.selectedId === 'ozone-layer';
+    const iono = s.selectedId === 'ionosphere';
+    const key = [s.grouping, s.scaleMode, s.view, s.cutDeg, s.hidden, s.overlays.atmosphere, ozone, iono];
     if (key.some((k, i) => k !== memo.current.key[i])) {
       memo.current = {
         key,
@@ -80,6 +84,7 @@ function Animator() {
           cutDeg: s.cutDeg,
           hidden: new Set(Object.keys(s.hidden).filter((k) => s.hidden[k])),
           showAtmosphere: s.overlays.atmosphere,
+          extraBands: [...(ozone ? ['ozone-layer'] : []), ...(iono ? ['ionosphere'] : [])],
         }),
       };
     }
@@ -161,6 +166,7 @@ function CameraRig() {
   const nonce = useEarth((s) => s.cameraNonce);
   const magnet = useEarth((s) => s.overlays.magnetosphere);
   const far = useEarth((s) => (s.depthKm ?? 0) > 700);
+  const journeyOn = useEarth((s) => s.depthKm !== null);
   const first = useRef(true);
 
   useEffect(() => {
@@ -170,8 +176,10 @@ function CameraRig() {
     const animate = !first.current && !prefersReducedMotion();
     first.current = false;
     void c.setLookAt(pos.x, pos.y, pos.z, target.x, target.y, target.z, animate);
+    const wide = size.width / size.height > 1.25;
+    void c.setFocalOffset(journeyOn && wide ? -pos.distanceTo(target) * 0.16 : 0, 0, 0, animate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [view, selectedId, scaleMode, nonce, magnet, far, size.width < size.height]);
+  }, [view, selectedId, scaleMode, nonce, magnet, far, journeyOn, size.width < size.height]);
 
   useEffect(() => {
     const c = controls.current;

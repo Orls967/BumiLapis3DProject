@@ -34,6 +34,8 @@ export type ShellOptions = {
   cutDeg: number;
   hidden: ReadonlySet<string>;
   showAtmosphere: boolean;
+  /** Functional layers (ozone, ionosphere) to draw as extra bands. */
+  extraBands?: readonly string[];
 };
 
 /** Pure description of every shell for the given view state. */
@@ -92,6 +94,21 @@ export function shellTargets(o: ShellOptions): ShellTarget[] {
         capsOnly: true,
       });
     });
+  for (const id of o.extraBands ?? []) {
+    const l = o.layers.find((x) => x.id === id);
+    if (!l) continue;
+    out.push({
+      id: l.id,
+      kind: 'atmosphere',
+      rOuter: displayRadius(l.topKm, o.scaleMode),
+      rInner: displayRadius(l.bottomKm, o.scaleMode),
+      cut: baseCut,
+      offsetZ: 0,
+      opacity: o.view !== 'closed' ? 1 : 0,
+      index: 9,
+      capsOnly: true,
+    });
+  }
   return out;
 }
 

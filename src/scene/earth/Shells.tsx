@@ -130,7 +130,7 @@ function ShellMeshes({
       return m;
     };
     if (isBand) {
-      const alpha = id === 'ocean' ? 0.95 : id === 'exosphere' ? 0.1 : id === 'thermosphere' ? 0.2 : 0.3;
+      const alpha = id === 'ocean' ? 0.95 : id === 'ozone-layer' ? 0.55 : id === 'exosphere' ? 0.1 : id === 'thermosphere' ? 0.2 : 0.3;
       return (['cap1', 'cap2'] as const).map((role) => {
         const m = tune(makeMaterial('band', layer.color, octaves, DoubleSide), 1);
         m.uniforms.uAlpha.value = alpha;
@@ -233,7 +233,7 @@ function Halo({ sphere }: { sphere: SphereGeometry }) {
 }
 
 const SHELL_IDS = layers
-  .filter((l) => (l.realm === 'interior' && !l.variantOf) || l.realm === 'atmosphere' || l.id === 'ocean')
+  .filter((l) => (l.realm === 'interior' && !l.variantOf) || l.realm === 'atmosphere' || ['ocean', 'ozone-layer', 'ionosphere'].includes(l.id))
   .map((l) => l.id);
 
 function ShellsInner({ textures }: { textures: Texture[] | null }) {

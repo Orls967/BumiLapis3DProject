@@ -11,11 +11,15 @@ import { InfoPanel } from './InfoPanel';
 import { LayerList } from './LayerList';
 import { Onboarding } from './Onboarding';
 import { useUrlSync } from './useUrlSync';
+import { Journey, journeyLabel } from './Journey';
+import { scaleMarkers } from '@/content/markers';
+import { fmtAuto } from '@/lib/format';
+import type { OverlayKey } from '@/store/earth';
 
 const EarthScene = lazy(() => import('@/scene/earth/EarthScene'));
 
 const labelIds = [
-  ...layers.filter((l) => (l.realm === 'interior' && !l.variantOf) || l.realm === 'atmosphere' || l.id === 'ocean').map((l) => l.id),
+  ...layers.filter((l) => (l.realm === 'interior' && !l.variantOf) || l.realm === 'atmosphere' || ['ocean', 'ozone-layer', 'ionosphere'].includes(l.id)).map((l) => l.id),
 ];
 
 function Labels() {
@@ -58,6 +62,88 @@ function Labels() {
           {d.name}
         </div>
       ))}
+      {scaleMarkers.map((m) => (
+        <div
+          key={m.id}
+          ref={(el) => {
+            if (el) overlayEls.labels.set(`mk:${m.id}`, el);
+            else overlayEls.labels.delete(`mk:${m.id}`);
+          }}
+          className="label3d absolute left-0 top-0 !text-[11px]"
+          style={{ opacity: 0, transform: 'translate(-999px,-999px)', marginLeft: 12 }}
+          title={m.note}
+        >
+          {m.name} · {m.altKm > 0 ? '+' : '−'}
+          {fmtAuto(Math.abs(m.altKm))} km{m.verified ? '' : ` (${ui.common.needsVerification})`}
+        </div>
+      ))}
+      <div
+        ref={(el) => {
+          if (el) overlayEls.labels.set('ov:magnetosphere', el);
+          else overlayEls.labels.delete('ov:magnetosphere');
+        }}
+        className="label3d absolute left-0 top-0 !border-cyan-300/60 !text-cyan-100"
+        style={{ opacity: 0, transform: 'translate(-999px,-999px)' }}
+      >
+        {ui.explore.overlays.magnetosphereLabel}
+      </div>
+      <JourneyLabel />
+    </div>
+  );
+}
+
+function JourneyLabel() {
+  const depthKm = useEarth((s) => s.depthKm);
+  return (
+    <div
+      ref={(el) => {
+        if (el) overlayEls.labels.set('journey', el);
+        else overlayEls.labels.delete('journey');
+      }}
+      className="label3d absolute left-0 top-0 !border-amber-300 !bg-amber-300 !text-black"
+      style={{ opacity: 0, transform: 'translate(-999px,-999px)', marginTop: -22 }}
+    >
+      {depthKm !== null ? journeyLabel(depthKm) : ''}
+    </div>
+  );
+}
+
+const OVERLAY_KEYS: OverlayKey[] = ['atmosphere', 'discontinuities', 'markers', 'karman', 'ozone', 'plates', 'magnetosphere'];
+
+function OverlayMenu({ onClose }: { onClose: () => void }) {
+  const overlays = useEarth((s) => s.overlays);
+  const toggle = useEarth((s) => s.toggleOverlay);
+  const view = useEarth((s) => s.view);
+  const setView = useEarth((s) => s.setView);
+  const O = ui.explore.overlays;
+  return (
+    <div className="glass absolute right-3 top-14 z-30 grid w-72 gap-1 p-2" role="group" aria-label={O.title}>
+      <div className="flex items-center justify-between px-1">
+        <h2 className="text-sm font-extrabold">{O.title}</h2>
+        <button className="btn btn-sm" onClick={onClose} aria-label={ui.common.close}>
+          ✕
+        </button>
+      </div>
+      {OVERLAY_KEYS.map((k) => (
+        <button
+          key={k}
+          role="switch"
+          aria-checked={overlays[k]}
+          className="flex min-h-11 items-center gap-2 rounded-lg px-2 text-left text-sm font-semibold hover:bg-panel2"
+          onClick={() => {
+            toggle(k);
+            if (!overlays[k] && view === 'closed' && k !== 'plates' && k !== 'magnetosphere') setView('wedge');
+          }}
+        >
+          <span aria-hidden className={`grid h-5 w-9 shrink-0 items-center rounded-full px-0.5 transition-colors ${overlays[k] ? 'bg-accent' : 'bg-line'}`}>
+            <span className={`h-4 w-4 rounded-full bg-white transition-transform ${overlays[k] ? 'translate-x-4' : ''}`} />
+          </span>
+          {O[k]}
+        </button>
+      ))}
+      <p className="px-1 text-[11px] leading-tight text-muted">
+        {O.needsCut} {overlays.plates && O.platesCredit}
+      </p>
     </div>
   );
 }
@@ -88,6 +174,16 @@ export default function ExplorePage() {
   const select = useEarth((s) => s.select);
   const selected = selectedId ? (layerById.get(selectedId) ?? null) : null;
   const [listOpen, setListOpen] = useState(false);
+  const [overlayOpen, setOverlayOpen] = useState(false);
+  const depthKm = useEarth((s) => s.depthKm);
+  const setDepthKm = useEarth((s) => s.setDepthKm);
+  const journeyOn = depthKm !== null;
+  const toggleJourney = useCallback(() => {
+    const s = useEarth.getState();
+    if (s.depthKm !== null) return setDepthKm(null);
+    if (s.view === 'closed' || s.view === 'explode') s.setView('wedge');
+    setDepthKm(0);
+  }, [setDepthKm]);
   const [help, setHelp] = useState(() => {
     try {
       return !localStorage.getItem('bl-onboarded');
@@ -115,7 +211,7 @@ export default function ExplorePage() {
   }, [mobile, selectedId]);
 
   const B = ui.explore.scaleBadge;
-  const sheetOpen = mobile && !!selected;
+  const sheetOpen = mobile && (!!selected || journeyOn);
 
   return (
     <div className="relative h-full overflow-hidden bg-[#03050c] text-ink">
@@ -154,9 +250,23 @@ export default function ExplorePage() {
             <LayerList />
           </aside>
         )}
+        {!mobile && journeyOn && (
+          <aside aria-label={ui.explore.journey.title} className="glass absolute bottom-24 left-[16.5rem] top-3 z-10 flex w-[21rem] flex-col">
+            <Journey onClose={() => setDepthKm(null)} />
+          </aside>
+        )}
+        <button
+          className={`btn btn-sm glass absolute z-10 ${mobile ? 'right-2 top-14' : 'top-2'} `}
+          style={mobile ? undefined : { right: selected ? 404 : 12 }}
+          aria-expanded={overlayOpen}
+          onClick={() => setOverlayOpen((v) => !v)}
+        >
+          <span aria-hidden>☷</span> {ui.explore.actions.overlays}
+        </button>
+        {overlayOpen && <OverlayMenu onClose={() => setOverlayOpen(false)} />}
 
         <div className="absolute inset-x-0 bottom-2 z-10 flex justify-center px-2">
-          <ActionBar onHelp={() => setHelp(true)} onTour={() => undefined} onJourney={() => undefined} journeyOn={false} compact={sheetOpen} />
+          <ActionBar onHelp={() => setHelp(true)} onTour={() => undefined} onJourney={toggleJourney} journeyOn={journeyOn} compact={sheetOpen} />
         </div>
       </div>
 
@@ -171,6 +281,11 @@ export default function ExplorePage() {
         </div>
       )}
 
+      {mobile && journeyOn && !selected && (
+        <Sheet label={ui.explore.journey.title}>
+          <Journey compact onClose={() => setDepthKm(null)} />
+        </Sheet>
+      )}
       {selected &&
         (mobile ? (
           <Sheet label={selected.name}>
