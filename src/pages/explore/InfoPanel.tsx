@@ -8,6 +8,7 @@ import { Tabs } from '@/ui/Tabs';
 import { RichText } from '@/ui/RichText';
 import { SourceList } from '@/ui/SourceList';
 import { derivedData } from './derived';
+import { ShadowZones } from '@/ui/ShadowZones';
 
 const P = ui.explore.panel;
 
@@ -188,7 +189,12 @@ export function InfoPanel({ layer }: { layer: EarthLayer }) {
         {tab === 1 && <DataTab layer={layer} />}
         {tab === 2 && <CompositionTab layer={layer} />}
         {tab === 3 && <Bullets items={layer.insights} />}
-        {tab === 4 && <Bullets items={layer.evidence} />}
+        {tab === 4 && (
+          <>
+            <Bullets items={layer.evidence} />
+            {(layer.id === 'outer-core' || layer.id === 'inner-core') && <ShadowZones />}
+          </>
+        )}
         {tab === 5 && <SourceList sources={layer.sources} verified={layer.verified} />}
       </Tabs>
       <footer className="flex shrink-0 flex-wrap gap-2 border-t border-line p-3">

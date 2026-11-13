@@ -12,6 +12,8 @@ import { LayerList } from './LayerList';
 import { Onboarding } from './Onboarding';
 import { useUrlSync } from './useUrlSync';
 import { Journey, journeyLabel } from './Journey';
+import { Tour } from './Tour';
+import { QuizButton } from '@/ui/Quiz';
 import { scaleMarkers } from '@/content/markers';
 import { fmtAuto } from '@/lib/format';
 import type { OverlayKey } from '@/store/earth';
@@ -177,7 +179,10 @@ export default function ExplorePage() {
   const [overlayOpen, setOverlayOpen] = useState(false);
   const depthKm = useEarth((s) => s.depthKm);
   const setDepthKm = useEarth((s) => s.setDepthKm);
-  const journeyOn = depthKm !== null;
+  const tourStep = useEarth((s) => s.tourStep);
+  const setTourStep = useEarth((s) => s.setTourStep);
+  const touring = tourStep !== null;
+  const journeyOn = depthKm !== null && !touring;
   const toggleJourney = useCallback(() => {
     const s = useEarth.getState();
     if (s.depthKm !== null) return setDepthKm(null);
@@ -211,7 +216,7 @@ export default function ExplorePage() {
   }, [mobile, selectedId]);
 
   const B = ui.explore.scaleBadge;
-  const sheetOpen = mobile && (!!selected || journeyOn);
+  const sheetOpen = mobile && !touring && (!!selected || journeyOn);
 
   return (
     <div className="relative h-full overflow-hidden bg-[#03050c] text-ink">
@@ -264,9 +269,13 @@ export default function ExplorePage() {
           <span aria-hidden>☷</span> {ui.explore.actions.overlays}
         </button>
         {overlayOpen && <OverlayMenu onClose={() => setOverlayOpen(false)} />}
+        <div className={`absolute z-10 ${mobile ? 'left-2 top-14' : 'top-2'}`} style={mobile ? undefined : { right: selected ? 560 : 168 }}>
+          <QuizButton module="earth" className="btn btn-sm glass" />
+        </div>
 
-        <div className="absolute inset-x-0 bottom-2 z-10 flex justify-center px-2">
-          <ActionBar onHelp={() => setHelp(true)} onTour={() => undefined} onJourney={toggleJourney} journeyOn={journeyOn} compact={sheetOpen} />
+        <div className="absolute inset-x-0 bottom-2 z-10 flex flex-col items-center gap-2 px-2">
+          <Tour showDetails={mobile ? () => setTourStep(null) : undefined} />
+          <ActionBar onHelp={() => setHelp(true)} onTour={() => setTourStep(touring ? null : 0)} onJourney={toggleJourney} journeyOn={journeyOn} compact={sheetOpen || touring} />
         </div>
       </div>
 
@@ -281,12 +290,13 @@ export default function ExplorePage() {
         </div>
       )}
 
-      {mobile && journeyOn && !selected && (
+      {mobile && journeyOn && !selected && !touring && (
         <Sheet label={ui.explore.journey.title}>
           <Journey compact onClose={() => setDepthKm(null)} />
         </Sheet>
       )}
       {selected &&
+        !(mobile && touring) &&
         (mobile ? (
           <Sheet label={selected.name}>
             <InfoPanel layer={selected} />

@@ -144,7 +144,7 @@ function computePose(s: EarthState, aspect: number) {
     const rTop = displayRadius(sel.topKm, s.scaleMode);
     const rBot = displayRadius(sel.bottomKm, s.scaleMode);
     if (sel.id === 'magnetosphere') dist = 9;
-    else if (sel.realm === 'atmosphere' || sel.realm === 'functional') dist = Math.max(3.5, Math.min(rTop, 3) * 2.7);
+    else if (sel.realm === 'atmosphere' || sel.realm === 'functional') dist = Math.max(dist, Math.min(rTop, 3) * 2.9);
     else if (sel.realm === 'interior' && s.view !== 'closed') {
       const t = live.shells.get(sel.id);
       const cut = t?.cut ?? MathUtils.degToRad(s.cutDeg);
