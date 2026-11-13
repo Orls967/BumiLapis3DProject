@@ -1,9 +1,9 @@
 # PROGRESS
 Diperbarui: 2026-11-13 (sesi 2)
-Milestone aktif: M9
-Sub-tugas aktif: siap online (LICENSE, workflow Pages, uji subpath, PUBLIKASI.md)
-Langkah berikut yang persis: buat LICENSE (MIT), .github/workflows/deploy.yml, uji `dist` dari
-  subfolder, periksa berkas ter-commit, tulis docs/PUBLIKASI.md, tag m9, laporan akhir.
+Milestone aktif: — (M0–M9 selesai)
+Sub-tugas aktif: menunggu kata "Publikasikan" dari pemilik
+Langkah berikut yang persis: saat pemilik berkata "Publikasikan", jalankan BUMILAPIS.md Bagian 6
+  (ringkasannya di docs/PUBLIKASI.md). Sebelum itu: tanpa remote, tanpa push.
 
 ## Selesai
 - [x] M0 Fondasi (tag m0)
@@ -15,8 +15,9 @@ Langkah berikut yang persis: buat LICENSE (MIT), .github/workflows/deploy.yml, u
 - [x] M6 Simulasi sedimentasi (tag m6)
 - [x] M7 Interpretasi lingkungan pengendapan (tag m7)
 - [x] M8 Penyempurnaan (tag m8)
+- [x] M9 Siap online (tag m9)
 ## Sedang berjalan
-- [ ] M9 Siap online
+(tidak ada)
 ## Keputusan
 - `.claude/settings.json` TIDAK dibuat: penulisan berkas izin ditolak oleh pengaman sesi
   (auto-mode classifier). Larangan push tetap dipatuhi secara manual.
@@ -62,6 +63,10 @@ Langkah berikut yang persis: buat LICENSE (MIT), .github/workflows/deploy.yml, u
   dan Lapisan Batuan. 60 fps terukur di Chromium headless (desktop dan viewport ponsel) pada
   mesin pengembang; belum diukur di ponsel fisik.
 - E2E: `npm run e2e` menjalankan 8 uji asap terhadap build produksi (port 4173).
+- M9: lisensi MIT atas nama pengguna git lokal (Orls967). Workflow Pages memakai
+  checkout@v7, setup-node@v7 (Node 24), configure-pages@v5, upload-pages-artifact@v5,
+  deploy-pages@v5 (versi dicek di halaman rilis masing-masing, 2026-11-13). `dist` diuji dari
+  subfolder `/apa/saja/`: 11 rute terbuka, tekstur 200, tanpa galat konsol.
 ## Masalah terbuka
 - Label 3D lapisan tipis kadang disembunyikan oleh pencegah tumpang-tindih (disengaja).
 - Performa di ponsel fisik belum diukur (hanya emulasi viewport).

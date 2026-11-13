@@ -10,3 +10,19 @@
 Awan dirender secara prosedural (noise shader); tidak memakai tekstur pihak ketiga.
 Semua berkas diubah ukurannya dan dikonversi ke WebP dengan `scripts/textures.mjs`.
 Pola litologi, ikon, dan diagram digambar sendiri untuk proyek ini.
+
+## Data dan rujukan ilmiah
+
+Angka dan fakta berasal dari rujukan yang tercantum di halaman Tentang (`src/content/sources.ts`):
+PREM (Dziewonski & Anderson, 1981), U.S. Standard Atmosphere (1976), Ferguson & Church (2004),
+Hjulström (1935; kurva didigitasi secara pendekatan), Bishop (2001, USGS OFR 99-50-S),
+De Coster (1974), ICS International Chronostratigraphic Chart, serta buku ajar Boggs dan Nichols.
+Warna skala waktu geologi mengikuti ICS/CGMW. Gaya pola litologi mengacu pada FGDC-STD-013-2006,
+tetapi seluruh pola digambar ulang untuk proyek ini.
+
+## Perangkat lunak
+
+Kode aplikasi berlisensi MIT (lihat `LICENSE`). Pustaka pihak ketiga (React, three.js,
+@react-three/fiber, drei, postprocessing, Zustand, React Router, Tailwind CSS, d3-scale,
+d3-shape, Zod, Vite) dipasang lewat npm dan mengikuti lisensinya masing-masing (MIT/ISC/BSD).
+Tidak ada fon atau ikon pihak ketiga yang dibundel; antarmuka memakai fon sistem.
