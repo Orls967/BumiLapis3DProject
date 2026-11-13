@@ -1,6 +1,6 @@
 # Publikasi BumiLapis
 
-> **Sudah dipublikasikan pada 2026-11-13.** Repositori: https://github.com/Orls967/BumiLapis ·
+> **Sudah dipublikasikan pada 2026-11-13.** Repositori: https://github.com/Orls967/BumiLapis3DProject ·
 > Situs: https://orls967.github.io/BumiLapis3DProject/ . Bagian "Langkah saat Publikasikan" di bawah
 > disimpan sebagai catatan; untuk memperbarui situs lihat "Memperbarui situs sesudahnya".
 

@@ -3,7 +3,7 @@ Diperbarui: 2026-11-13 (sesi 2)
 Milestone aktif: — (M0–M9 selesai, sudah dipublikasikan 2026-11-13)
 Sub-tugas aktif: tidak ada
 Langkah berikut yang persis: pembaruan cukup `git push` ke `main`; workflow membangun ulang dan
-  men-deploy otomatis. Repo: https://github.com/Orls967/BumiLapis ·
+  men-deploy otomatis. Repo: https://github.com/Orls967/BumiLapis3DProject ·
   Situs: https://orls967.github.io/BumiLapis3DProject/
 
 ## Selesai
