@@ -4,7 +4,13 @@ import { glossary } from './glossary';
 import { quizzes } from './quizzes';
 import { tour } from './tour';
 import { scaleMarkers } from './markers';
-import { earthLayerSchema, glossaryEntrySchema, quizQuestionSchema, sourceSchema } from './schema';
+import { earthLayerSchema, formationSchema, glossaryEntrySchema, lithologySchema, quizQuestionSchema, sourceSchema, stratColumnSchema } from './schema';
+import { builtinColumns } from './columns';
+import { formationById, formations } from './formations';
+import { lithologies, lithologyById } from './lithologies';
+import { environmentNames, fossils, structures } from './vocab';
+import { checkOrder } from '@/lib/columnIO';
+import { patternDefs } from '@/ui/lithologyPatterns';
 
 describe('earth layers', () => {
   it('validate against the schema with ≥3 insights and ≥1 source each', () => {
@@ -72,5 +78,62 @@ describe('learning content', () => {
 
   it('has sourced scale markers', () => {
     for (const m of scaleMarkers) for (const s of m.sources) expect(sourceSchema.safeParse(s).success).toBe(true);
+  });
+});
+
+describe('stratigraphy content', () => {
+  it('has the fourteen required lithologies, each with a drawn pattern', () => {
+    expect(lithologies).toHaveLength(14);
+    for (const l of lithologies) {
+      expect(lithologySchema.safeParse(l).success).toBe(true);
+      expect(patternDefs[l.patternId], l.id).toBeDefined();
+    }
+  });
+
+  it('has valid formations with consistent references and stratigraphic order', () => {
+    for (const f of formations) {
+      const r = formationSchema.safeParse(f);
+      expect(r.success, `${f.id}: ${r.success ? '' : JSON.stringify(r.error.issues)}`).toBe(true);
+      for (const l of f.lithologies) expect(lithologyById.has(l), `${f.id} → ${l}`).toBe(true);
+      for (const e of f.environmentIds) expect(environmentNames[e], `${f.id} → ${e}`).toBeDefined();
+      if (f.overlies) expect(formationById.get(f.overlies)?.underlies).toBe(f.id);
+      if (f.underlies) expect(formationById.get(f.underlies)?.overlies).toBe(f.id);
+    }
+    expect(formations.map((f) => f.id)).toEqual(['basement', 'lahat', 'talang-akar', 'baturaja', 'gumai', 'air-benakat', 'muara-enim', 'kasai']);
+  });
+
+  it('has valid built-in columns whose ids all resolve', () => {
+    const s = new Set(structures.map((x) => x.id));
+    const fo = new Set(fossils.map((x) => x.id));
+    for (const c of builtinColumns) {
+      const r = stratColumnSchema.safeParse(c);
+      expect(r.success, `${c.id}: ${r.success ? '' : JSON.stringify(r.error.issues)}`).toBe(true);
+      expect(checkOrder(c.beds)).toEqual([]);
+      for (const b of c.beds) {
+        expect(lithologyById.has(b.lithologyId), `${b.id} lithology`).toBe(true);
+        if (b.formationId) expect(formationById.has(b.formationId), `${b.id} formation`).toBe(true);
+        if (b.environmentId) expect(environmentNames[b.environmentId], `${b.id} environment`).toBeDefined();
+        for (const x of b.structures) expect(s.has(x), `${b.id} structure ${x}`).toBe(true);
+        for (const x of b.fossils) expect(fo.has(x), `${b.id} fossil ${x}`).toBe(true);
+      }
+    }
+  });
+
+  it('teaching column is ≈150 m with 15–20 beds and the required elements', () => {
+    const t = builtinColumns.find((c) => c.id === 'teaching')!;
+    expect(t.beds.length).toBeGreaterThanOrEqual(15);
+    expect(t.beds.length).toBeLessThanOrEqual(20);
+    expect(t.beds[t.beds.length - 1].baseM).toBe(150);
+    expect(t.beds.some((b) => b.baseContact === 'unconformity')).toBe(true);
+    expect(t.beds.some((b) => b.baseContact === 'erosional')).toBe(true);
+    expect(t.beds.some((b) => b.structures.includes('bouma'))).toBe(true);
+    expect(t.beds.some((b) => b.lithologyId === 'coal')).toBe(true);
+    expect(t.beds.some((b) => b.lithologyId === 'limestone')).toBe(true);
+  });
+
+  it('South Sumatra column lists formations youngest to oldest', () => {
+    const c = builtinColumns.find((x) => x.id === 'south-sumatra')!;
+    const order = [...new Set(c.beds.map((b) => b.formationId))];
+    expect(order).toEqual(['kasai', 'muara-enim', 'air-benakat', 'gumai', 'baturaja', 'talang-akar', 'lahat', 'basement']);
   });
 });

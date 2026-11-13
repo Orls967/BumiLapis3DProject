@@ -1,5 +1,7 @@
 import type { SearchItem } from '@/lib/search';
+import { formations } from './formations';
 import { glossary } from './glossary';
+import { environmentNames } from './vocab';
 import { layers } from './layers';
 import { ui } from './ui';
 
@@ -29,6 +31,8 @@ export function searchIndex(): SearchItem[] {
       to: `/?lapisan=${l.id}`,
       body: `${l.summary} ${l.keyFact}`,
     })),
+    ...formations.map<SearchItem>((f) => ({ kind: 'formation', title: f.name, subtitle: `${f.basin} · ${f.age}`, to: `/formasi/${f.id}`, body: f.description })),
+    ...Object.entries(environmentNames).map<SearchItem>(([id, name]) => ({ kind: 'environment', title: name, subtitle: 'Lingkungan pengendapan', to: `/interpretasi?lingkungan=${id}` })),
     ...extra,
     ...glossary.map<SearchItem>((g) => ({
       kind: 'term',

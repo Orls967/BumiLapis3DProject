@@ -1,0 +1,329 @@
+{
+  "id": "teaching",
+  "title": "Kolom ajar generik (contoh ajar)",
+  "location": "Rekaan untuk belajar; bukan lokasi nyata",
+  "kind": "example",
+  "note": "Contoh ajar rekaan (≈150 m). Dari bawah ke atas: paket turbidit dengan urutan Bouma, ketidakselarasan, selang karbonat, urutan delta mengasar ke atas dengan batubara di puncak, lalu urutan sungai menghalus ke atas dengan dasar erosional.",
+  "beds": [
+    {
+      "id": "t-01",
+      "topM": 0,
+      "baseM": 6,
+      "lithologyId": "shale",
+      "grainSize": "clay",
+      "structures": [
+        "mud-cracks",
+        "roots"
+      ],
+      "fossils": [
+        "plants"
+      ],
+      "baseContact": "gradational",
+      "environmentId": "meandering-river",
+      "color": "red",
+      "description": "Lempung dataran banjir kemerahan dengan rekah kerut dan jejak akar."
+    },
+    {
+      "id": "t-02",
+      "topM": 6,
+      "baseM": 11,
+      "lithologyId": "siltstone",
+      "grainSize": "silt",
+      "structures": [
+        "ripples"
+      ],
+      "fossils": [
+        "plants"
+      ],
+      "baseContact": "gradational",
+      "environmentId": "meandering-river",
+      "description": "Batulanau bergelembur; puncak gosong tanjung."
+    },
+    {
+      "id": "t-03",
+      "topM": 11,
+      "baseM": 19,
+      "lithologyId": "sandstone",
+      "grainSize": "m-sand",
+      "grainSizeTop": "f-sand",
+      "structures": [
+        "cross-bedding"
+      ],
+      "fossils": [],
+      "baseContact": "gradational",
+      "environmentId": "meandering-river",
+      "description": "Batupasir bersilang-siur yang menghalus ke atas."
+    },
+    {
+      "id": "t-04",
+      "topM": 19,
+      "baseM": 24,
+      "lithologyId": "sandstone",
+      "grainSize": "vc-sand",
+      "grainSizeTop": "c-sand",
+      "structures": [
+        "trough-cross-bedding",
+        "erosional-base"
+      ],
+      "fossils": [
+        "wood"
+      ],
+      "baseContact": "erosional",
+      "environmentId": "meandering-river",
+      "description": "Batupasir kasar berkerikil di dasar alur sungai; dasar erosional memotong batubara di bawahnya."
+    },
+    {
+      "id": "t-05",
+      "topM": 24,
+      "baseM": 26,
+      "lithologyId": "coal",
+      "grainSize": "clay",
+      "structures": [],
+      "fossils": [
+        "plants"
+      ],
+      "baseContact": "sharp",
+      "environmentId": "delta",
+      "description": "Batubara rawa dataran delta."
+    },
+    {
+      "id": "t-06",
+      "topM": 26,
+      "baseM": 36,
+      "lithologyId": "sandstone",
+      "grainSize": "f-sand",
+      "grainSizeTop": "m-sand",
+      "structures": [
+        "cross-bedding",
+        "ripples"
+      ],
+      "fossils": [
+        "plants"
+      ],
+      "baseContact": "gradational",
+      "environmentId": "delta",
+      "description": "Batupasir muka delta, mengasar ke atas."
+    },
+    {
+      "id": "t-07",
+      "topM": 36,
+      "baseM": 46,
+      "lithologyId": "siltstone",
+      "grainSize": "silt",
+      "grainSizeTop": "vf-sand",
+      "structures": [
+        "ripples",
+        "bioturbation",
+        "convolute"
+      ],
+      "fossils": [
+        "brackish-fauna"
+      ],
+      "baseContact": "gradational",
+      "environmentId": "delta",
+      "description": "Batulanau sampai pasir sangat halus; struktur beban."
+    },
+    {
+      "id": "t-08",
+      "topM": 46,
+      "baseM": 62,
+      "lithologyId": "shale",
+      "grainSize": "clay",
+      "grainSizeTop": "silt",
+      "structures": [
+        "parallel-lamination",
+        "bioturbation"
+      ],
+      "fossils": [
+        "marine-fauna"
+      ],
+      "baseContact": "gradational",
+      "environmentId": "delta",
+      "color": "dark",
+      "description": "Lempung prodelta abu-abu gelap."
+    },
+    {
+      "id": "t-09",
+      "topM": 62,
+      "baseM": 70,
+      "lithologyId": "marl",
+      "grainSize": "clay",
+      "structures": [
+        "bioturbation"
+      ],
+      "fossils": [
+        "forams"
+      ],
+      "baseContact": "gradational",
+      "environmentId": "carbonate-platform",
+      "description": "Napal dengan foraminifera."
+    },
+    {
+      "id": "t-10",
+      "topM": 70,
+      "baseM": 84,
+      "lithologyId": "limestone",
+      "grainSize": "c-sand",
+      "structures": [
+        "massive"
+      ],
+      "fossils": [
+        "coral",
+        "algae"
+      ],
+      "baseContact": "sharp",
+      "environmentId": "carbonate-platform",
+      "description": "Batugamping terumbu (boundstone) dengan koral dan alga."
+    },
+    {
+      "id": "t-11",
+      "topM": 84,
+      "baseM": 92,
+      "lithologyId": "limestone",
+      "grainSize": "m-sand",
+      "structures": [
+        "ooids",
+        "cross-bedding"
+      ],
+      "fossils": [
+        "large-forams"
+      ],
+      "baseContact": "unconformity",
+      "environmentId": "carbonate-platform",
+      "description": "Batugamping grainstone dengan ooid; menindih paket turbidit di atas bidang ketidakselarasan."
+    },
+    {
+      "id": "t-12",
+      "topM": 92,
+      "baseM": 98,
+      "lithologyId": "shale",
+      "grainSize": "clay",
+      "structures": [
+        "fine-lamination"
+      ],
+      "fossils": [
+        "planktonic-forams"
+      ],
+      "baseContact": "gradational",
+      "environmentId": "submarine-fan",
+      "color": "dark",
+      "description": "Lumpur hemipelagik (Te)."
+    },
+    {
+      "id": "t-13",
+      "topM": 98,
+      "baseM": 104,
+      "lithologyId": "sandstone",
+      "grainSize": "m-sand",
+      "grainSizeTop": "vf-sand",
+      "structures": [
+        "graded-bedding",
+        "bouma",
+        "sole-marks"
+      ],
+      "fossils": [
+        "deep-marine-fauna"
+      ],
+      "baseContact": "sharp",
+      "environmentId": "submarine-fan",
+      "description": "Turbidit: pasir bersusun (Ta) → laminasi sejajar (Tb) → gelembur (Tc); cetakan suling di dasar."
+    },
+    {
+      "id": "t-14",
+      "topM": 104,
+      "baseM": 110,
+      "lithologyId": "shale",
+      "grainSize": "clay",
+      "structures": [
+        "fine-lamination"
+      ],
+      "fossils": [
+        "planktonic-forams"
+      ],
+      "baseContact": "gradational",
+      "environmentId": "submarine-fan",
+      "color": "dark",
+      "description": "Lumpur hemipelagik (Te)."
+    },
+    {
+      "id": "t-15",
+      "topM": 110,
+      "baseM": 117,
+      "lithologyId": "sandstone",
+      "grainSize": "m-sand",
+      "grainSizeTop": "vf-sand",
+      "structures": [
+        "graded-bedding",
+        "bouma",
+        "sole-marks"
+      ],
+      "fossils": [
+        "deep-marine-fauna"
+      ],
+      "baseContact": "sharp",
+      "environmentId": "submarine-fan",
+      "description": "Turbidit dengan urutan Bouma lengkap."
+    },
+    {
+      "id": "t-16",
+      "topM": 117,
+      "baseM": 123,
+      "lithologyId": "shale",
+      "grainSize": "clay",
+      "structures": [
+        "fine-lamination"
+      ],
+      "fossils": [
+        "planktonic-forams"
+      ],
+      "baseContact": "gradational",
+      "environmentId": "submarine-fan",
+      "color": "dark",
+      "description": "Lumpur hemipelagik (Te)."
+    },
+    {
+      "id": "t-17",
+      "topM": 123,
+      "baseM": 131,
+      "lithologyId": "sandstone",
+      "grainSize": "c-sand",
+      "grainSizeTop": "f-sand",
+      "structures": [
+        "graded-bedding",
+        "bouma",
+        "sole-marks"
+      ],
+      "fossils": [
+        "deep-marine-fauna"
+      ],
+      "baseContact": "sharp",
+      "environmentId": "submarine-fan",
+      "description": "Turbidit tebal bersusun; cetakan suling dan beban."
+    },
+    {
+      "id": "t-18",
+      "topM": 131,
+      "baseM": 150,
+      "lithologyId": "shale",
+      "grainSize": "clay",
+      "structures": [
+        "fine-lamination"
+      ],
+      "fossils": [
+        "planktonic-forams"
+      ],
+      "baseContact": "sharp",
+      "environmentId": "submarine-fan",
+      "color": "dark",
+      "description": "Serpih laut dalam."
+    }
+  ],
+  "sources": [
+    {
+      "title": "Kolom rekaan untuk pengajaran; pola fasies mengikuti Nichols, G. (2009), Sedimentology and Stratigraphy",
+      "author": "BumiLapis",
+      "year": 2026
+    }
+  ],
+  "verified": true
+}
