@@ -6,6 +6,8 @@ lapisan batuan, kolom stratigrafi, formasi, simulasi sedimentasi, dan interpreta
 pengendapan. Berjalan sepenuhnya di peramban: tanpa backend, tanpa akun, tanpa API key, tanpa
 pelacakan, dan tetap bisa dipakai offline setelah dimuat.
 
+**Demo: https://orls967.github.io/BumiLapis/**
+
 ![Globe terbelah](docs/screenshots/globe-terbelah.png)
 
 | | |
