@@ -1,10 +1,10 @@
 # PROGRESS
 Diperbarui: 2026-11-13 (sesi 2)
-Milestone aktif: M6
-Sub-tugas aktif: lib/sedsim (difusi cekungan, kecepatan jatuh, Hjulström) + test
-Langkah berikut yang persis: tulis src/lib/sedsim/{basin,settling,hjulstrom}.ts + test,
-  src/workers/sedsim.worker.ts, lalu src/pages/sedimentation/SedimentationPage.tsx
-  (tab Cekungan / Tabung / Saluran arus), teks di ui.ts bagian `sed`.
+Milestone aktif: M7
+Sub-tugas aktif: content/environments.ts (14 lingkungan + aturan) dan lib/interpret
+Langkah berikut yang persis: tulis src/content/environments.ts, src/lib/interpret/{engine,column}.ts
+  + test sembilan kasus (BUMILAPIS.md 4.6), lalu src/pages/interpret/InterpretPage.tsx
+  (formulir, hasil, mode kolom `?kolom=<id>`, kartu lingkungan), teks di ui.ts bagian `interp`.
 
 ## Selesai
 - [x] M0 Fondasi (tag m0)
@@ -13,8 +13,8 @@ Langkah berikut yang persis: tulis src/lib/sedsim/{basin,settling,hjulstrom}.ts 
 - [x] M3 Konten, pencarian, pembelajaran (tag m3)
 - [x] M4 Kolom stratigrafi dan formasi (tag m4)
 - [x] M5 Lapisan batuan 3D (tag m5)
+- [x] M6 Simulasi sedimentasi (tag m6)
 ## Sedang berjalan
-- [ ] M6 Simulasi sedimentasi
 - [ ] M7 Interpretasi lingkungan pengendapan
 - [ ] M8 Penyempurnaan
 - [ ] M9 Siap online
@@ -44,7 +44,15 @@ Langkah berikut yang persis: tulis src/lib/sedsim/{basin,settling,hjulstrom}.ts 
   raster penampang ke kanvas (pola litologi), bukan poligon; resolusi turun saat slider digeser.
 - Label skala blok ditulis sebagai teks DOM (drei `Html` memicu galat unmount di React 19).
 - Server pratinjau bisa pindah ke port 5174 bila 5173 terpakai: pakai `BASE_URL=... node scripts/shots.mjs`.
+- Simulasi cekungan (M6): satuan km / m / ribu tahun; fluks m·km per ribu tahun (= m²/thn).
+  Dua penyimpangan dari rumus Bagian 4.5.1, keduanya dinyatakan di UI: (1) K laut meluruh
+  terhadap kedalaman air (exp(−d/40 m)) agar sedimen tidak lolos ke ujung cekungan,
+  (2) batuan dasar tidak tererosi (fluks dibatasi sedimen yang tersedia). Garis waktu disimpan
+  di kerangka tanpa subsidence. Ada slider tambahan "tren muka laut" untuk preset transgresi.
+- Tabung pengendapan dan saluran arus digambar di kanvas 2D (bukan InstancedMesh).
 ## Masalah terbuka
 - Label 3D lapisan tipis kadang disembunyikan oleh pencegah tumpang-tindih (disengaja).
 ## Data berlabel verified:false
 - markers.ts: ketinggian jelajah pesawat ≈11 km (nilai tipikal, belum dirujuk).
+- lib/sedsim/hjulstrom.ts: kurva erosi dan pengendapan didigitasi secara pendekatan dari diagram
+  klasik Hjulström (1935); UI menampilkan label "perlu verifikasi" dan "kualitatif".

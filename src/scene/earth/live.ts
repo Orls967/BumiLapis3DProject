@@ -20,5 +20,4 @@ export const overlayEls = {
   tooltip: null as HTMLElement | null,
 };
 
-export const prefersReducedMotion = () =>
-  typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+export { prefersReducedMotion } from '@/ui/hooks';
